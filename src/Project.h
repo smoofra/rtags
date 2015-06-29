@@ -306,7 +306,7 @@ private:
     std::shared_ptr<FileMapScope> mFileMapScope;
 
     const Path mPath, mSourceFilePathBase;
-    Path mProjectFilePath;
+    Path mProjectFilePath, mSourcesFilePath;
 
     Files mFiles;
 

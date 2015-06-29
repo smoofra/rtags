@@ -1590,6 +1590,16 @@ void Server::restoreFileIds()
         fileIdsFile >> pathsToIds;
         Location::init(pathsToIds);
     } else {
+        Hash<Path, String> sources;
+        mOptions.dataDir.visit([&sources](const Path &path) {
+                if (path.isDir()) {
+                    if (path.startsWith('_'))
+                        return Path::Recurse;
+                } else if (!strcmp("sources", path.fileName())) {
+                    sources[path.parentDir()] = path.readAll();
+                }
+                return Path::Continue;
+            });
         if (!fileIdsFile.error().isEmpty()) {
             error("Can't restore file ids: %s", fileIdsFile.error().constData());
         }
